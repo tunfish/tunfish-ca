@@ -1,7 +1,8 @@
+##########
 tunfish-ca
-==========
+##########
 
-Tunfish certificate authority
+Tunfish certificate authority.
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg
      :target: https://github.com/pydanny/cookiecutter-django/
@@ -14,76 +15,55 @@ Tunfish certificate authority
 :License: AGPLv3
 
 
-Settings
---------
+*****
+About
+*****
+- Django 3.0 application made with `Cookiecutter Django`_.
+- Added Django application `django-ca`_.
 
-Moved to settings_.
 
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+.. _Cookiecutter Django: https://github.com/pydanny/cookiecutter-django
+.. _django-ca: https://django-ca.readthedocs.io/
 
-Basic Commands
---------------
 
-Setting Up Your Users
-^^^^^^^^^^^^^^^^^^^^^
-
-* To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
-
-* To create an **superuser account**, use this command::
-
-    $ python manage.py createsuperuser
-
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
-
-Type checks
-^^^^^^^^^^^
-
-Running type checks with mypy:
-
+*****
+Setup
+*****
+See also `Install django-ca as Django app`_.
 ::
 
-  $ mypy tunfish_ca
+    virtualenv .venv --python=python3.8
+    source .venv/bin/activate
+    pip install -r requirements/local.txt
 
-Test coverage
-^^^^^^^^^^^^^
+    export USE_DOCKER=no
+    export DATABASE_URL=sqlite:///tunfish-ca.db
 
-To run the tests, check your test coverage, and generate an HTML coverage report::
+    mkdir -p var/lib/ca
+    export CA_DIR=$(pwd)/var/lib/ca
 
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
+    python manage.py migrate
+    python manage.py collectstatic
 
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _Install django-ca as Django app: https://django-ca.readthedocs.io/en/latest/install.html#as-django-app-in-your-existing-django-project
 
+
+*************
+Run webserver
+*************
 ::
 
-  $ pytest
-
-Live reloading and Sass CSS compilation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Moved to `Live reloading and SASS compilation`_.
-
-.. _`Live reloading and SASS compilation`: http://cookiecutter-django.readthedocs.io/en/latest/live-reloading-and-sass-compilation.html
+    python manage.py createsuperuser --username admin --email admin@example.org
+    python manage.py runserver
 
 
+**********
+Operations
+**********
+::
 
+    # Create the root certificate for your CA
+    python manage.py init_ca RootCA CN=ca.example.org
 
-
-Deployment
-----------
-
-The following details how to deploy this application.
-
-
-
-Docker
-^^^^^^
-
-See detailed `cookiecutter-django Docker documentation`_.
-
-.. _`cookiecutter-django Docker documentation`: http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html
-
-
-
+    # Request root certificate in DER format
+    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
