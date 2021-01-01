@@ -1,3 +1,4 @@
+import django_ca.urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -26,6 +27,9 @@ urlpatterns += [
     # DRF auth token
     path("auth-token/", obtain_auth_token),
 ]
+
+# django-ca URLS
+urlpatterns += django_ca.urls.urlpatterns
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
