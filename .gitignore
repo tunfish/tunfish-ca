@@ -326,5 +326,5 @@ tunfish_ca/media/
 
 
 .ipython/
-.env
-.envs/*
+#.env
+#.envs/*

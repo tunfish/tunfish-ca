@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=tunfish_ca
+POSTGRES_USER=PXTyrKcBKcmtgQHcUryokEyorQYnbcpf
+POSTGRES_PASSWORD=x6Q2X1B0b3LuEYfMXfkd8IK25mhc5Px1GajD5EjZnEmufbovUdGJ5D2APuMCIowS
