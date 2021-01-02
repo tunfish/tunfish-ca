@@ -1,4 +1,5 @@
 import django_ca.urls
+import tunfish_ca.urls
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -30,6 +31,7 @@ urlpatterns += [
 
 # django-ca URLS
 urlpatterns += django_ca.urls.urlpatterns
+urlpatterns += tunfish_ca.urls.urlpatterns
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
