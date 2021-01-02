@@ -18,8 +18,8 @@ Tunfish certificate authority.
 *****
 About
 *****
-- Django 3.0 application made with `Cookiecutter Django`_.
-- Added Django application `django-ca`_.
+- Add Django 3.0 baseline application made with `Cookiecutter Django`_.
+- Add Django application `django-ca`_.
 
 
 .. _Cookiecutter Django: https://github.com/pydanny/cookiecutter-django
@@ -60,10 +60,39 @@ Run webserver
 **********
 Operations
 **********
+
+Command line interface
+======================
+See also `certificate authority management`_ and `certificate management`_.
+
 ::
 
-    # Create the root certificate for your CA
+    # Create the root certificate for your CA.
     python manage.py init_ca RootCA CN=ca.example.org
 
-    # Request root certificate in DER format
+    # List CAs.
+    python manage.py list_cas
+
+    # Create client key and certificate signing request (CSR).
+    openssl genrsa -out example.key 4096
+    openssl req -new -key example.key -out example.csr -utf8 -batch -subj '/CN=hello.example.org/emailAddress=root@hello.example.org'
+
+    # Sign a certificate (CSR).
+    python manage.py sign_cert --ca=55067C --csr=example.csr --out=example.pem --client --alt=hello.example.org
+
+.. _certificate authority management: https://django-ca.readthedocs.io/en/latest/cli/cas.html
+.. _certificate management: https://django-ca.readthedocs.io/en/latest/cli/certs.html
+
+HTTP interface
+==============
+
+::
+
+    # Request root certificate in DER format.
     http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
+
+    # Request root certificate in PEM format.
+    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.pem
+
+    # Sign a client certificate.
+    cat example.csr | http http://localhost:8000/pki/autosign Content-Type:application/x-pem-file
