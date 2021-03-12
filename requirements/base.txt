@@ -19,4 +19,4 @@ djangorestframework==3.12.2  # https://github.com/encode/django-rest-framework
 django-cors-headers==3.6.0 # https://github.com/adamchainz/django-cors-headers
 
 # django-ca
-django-ca==1.16.1
+django-ca==1.17.2
