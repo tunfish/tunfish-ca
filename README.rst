@@ -23,6 +23,16 @@ A certificate authority based on `django-ca`_ with some added convenience
 features for automatically issuing certificates.
 
 
+***********
+Quick setup
+***********
+
+::
+
+    make init
+    make run
+
+
 *****
 Setup
 *****
