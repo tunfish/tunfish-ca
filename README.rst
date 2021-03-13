@@ -88,11 +88,17 @@ HTTP interface
 
 ::
 
-    # Request root certificate in DER format.
-    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
-
     # Request root certificate in PEM format.
-    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.pem
+    http http://localhost:8000/issuer/RootCA.pem
 
     # Sign a client certificate.
-    cat example.csr | http http://localhost:8000/pki/autosign Content-Type:application/x-pem-file
+    cat example.csr | http http://localhost:8000/pki/RootCA/autosign Content-Type:application/x-pem-file
+
+
+More information
+================
+
+::
+
+    # Request root certificate in DER format.
+    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
