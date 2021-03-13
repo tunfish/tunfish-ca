@@ -18,43 +18,45 @@ Tunfish certificate authority.
 *****
 About
 *****
-- Add Django 3.0 baseline application made with `Cookiecutter Django`_.
-- Add Django application `django-ca`_.
 
-
-.. _Cookiecutter Django: https://github.com/pydanny/cookiecutter-django
-.. _django-ca: https://django-ca.readthedocs.io/
+A certificate authority based on `django-ca`_ with some added convenience
+features for automatically issuing certificates.
 
 
 *****
 Setup
 *****
-See also `Install django-ca as Django app`_.
+
 ::
 
     virtualenv .venv --python=python3.8
     source .venv/bin/activate
     pip install -r requirements/local.txt
 
-    export USE_DOCKER=no
-    export DATABASE_URL=sqlite:///tunfish-ca.db
-
+    # Create path where certificates are stored.
     mkdir -p var/lib/ca
     export CA_DIR=$(pwd)/var/lib/ca
 
+    export USE_DOCKER=no
+    export DATABASE_URL=sqlite:///tunfish-ca.db
+
+    # Create database.
     python manage.py migrate
-    python manage.py collectstatic
 
-.. _Install django-ca as Django app: https://django-ca.readthedocs.io/en/latest/install.html#as-django-app-in-your-existing-django-project
+    # Create CA root certificate.
+    python manage.py init_ca RootCA CN=ca.example.org
+
+    # Run HTTP server.
+    python manage.py runserver 3333
 
 
-*************
-Run webserver
-*************
+*************************
+Configure admin interface
+*************************
 ::
 
+    python manage.py collectstatic
     python manage.py createsuperuser --username admin --email admin@example.org
-    python manage.py runserver
 
 
 **********
@@ -66,9 +68,6 @@ Command line interface
 See also `certificate authority management`_ and `certificate management`_.
 
 ::
-
-    # Create the root certificate for your CA.
-    python manage.py init_ca RootCA CN=ca.example.org
 
     # List CAs.
     python manage.py list_cas
@@ -88,11 +87,30 @@ HTTP interface
 
 ::
 
-    # Request root certificate in DER format.
-    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
-
     # Request root certificate in PEM format.
-    http http://localhost:8000/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.pem
+    http http://localhost:3333/issuer/RootCA.pem
 
     # Sign a client certificate.
-    cat example.csr | http http://localhost:8000/pki/autosign Content-Type:application/x-pem-file
+    cat example.csr | http http://localhost:3333/pki/autosign?profile=client Content-Type:application/x-pem-file
+
+
+*****
+Notes
+*****
+
+- Add Django 3.0 baseline application made with `Cookiecutter Django`_.
+- Add Django application `django-ca`_.
+- See also `Install django-ca as Django app`_.
+
+::
+
+    # Request root certificate in DER format.
+    http http://localhost:3333/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.der
+
+    # Request root certificate in PEM format.
+    http http://localhost:3333/issuer/55067C65E99A75A70F1277DC52FEF134727BA36E.pem
+
+
+.. _Cookiecutter Django: https://github.com/pydanny/cookiecutter-django
+.. _django-ca: https://django-ca.readthedocs.io/
+.. _Install django-ca as Django app: https://django-ca.readthedocs.io/en/latest/install.html#as-django-app-in-your-existing-django-project
