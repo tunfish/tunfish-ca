@@ -328,3 +328,5 @@ tunfish_ca/media/
 .ipython/
 #.env
 #.envs/*
+
+*.db
