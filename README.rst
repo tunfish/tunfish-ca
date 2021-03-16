@@ -68,6 +68,10 @@ Configure admin interface
     python manage.py collectstatic
     python manage.py createsuperuser --username admin --email admin@example.org
 
+Open Django admin::
+
+    open http://127.0.0.1:3333/admin/
+
 
 **********
 Operations
