@@ -105,7 +105,7 @@ HTTP interface
     http http://localhost:3333/issuer/RootCA.pem
 
     # Sign a client certificate.
-    cat example.csr | http http://localhost:3333/pki/autosign?profile=client Content-Type:application/x-pem-file
+    cat example.csr | http http://localhost:3333/pki/RootCA/autosign?profile=client Content-Type:application/x-pem-file --output example.pem
 
 
 *****
